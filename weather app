@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root
+{
+    --gradient:linear-gradient(
+    rgb(95,200,200),
+    rgb(95,200,200)
+    );
+    --transparent:rgba(255,255,255,0.2);
+    --transparent2:rgba(255,255,255,0.6);
+}
+body {
+    background:var(--gradient);
+    height:100px;
+    overflow:hidden;
+    margin:0;
+    font-family:Poppins;
+}
+.flex
+{
+    display:flex;
+}
+.input>div:nth-child(1)
+{
+    width:100%;
+
+}
+.container
+{
+    max-width:800px;
+    left:50%;
+    top:50vh;
+    transform:translate(-50%,-50%);
+    position:absolute;
+    display:block;
+    width:90%;
+    z-index: 1000;
+
+}
+.app
+{
+    /backdrop-filter: blur(20px);/
+    margin-top:15%;
+    padding:5%;
+    width:90%;
+    border-radius:10px;
+    text-align:left;
+    background:var(--transparent);
+    border:1px solid var(--transparent);
+    /box-shadow:0px 10px 0px var(--transparent);/
+}
+input
+{
+    width:90%;
+    padding:0px;
+    background:none;
+    border:none;
+    outline:none;
+    border-bottom:2px solid var(--transparent);
+    padding-left:5px;
+    padding-right:-5px;
+    padding-top:5px;
+    padding-bottom:5px;
+    color:white;
+    font-family:Poppins;
+}
+input::placeholder
+{
+    color:var(--transparent2);
+}
+button
+{
+    font-family:Poppins;
+    text-transform:uppercase;
+    background:white;
+    color:rgb(84,170,250);
+    border:none;
+    outline:none;
+    padding:5px;
+    border-radius:5px;
+    transition:all 0.1s;
+}
+img
+{
+    background:none;
+    border:none;
+
+    position:relative;
+    margin-top:20px;
+    width:128px;
+    left:50%;
+    transform:translate(-50%);
+    /border-bottom:1px solid var(--transparent);/
+    height:128px;
+    outline:none;
+    border-radius:5px;
+}
+img:after
+{
+    content:"Condition image";
+    position:absolute;
+    top:0px;
+    left:0px;
+    width:128px;
+    height:128px;
+    background:white;
+    text-align:center;
+    line-height:128px;
+    font-size:12px;
+    color:rgb(84,170,250);
+    border-radius:5px;
+}
+h1
+{
+    padding-top:10px;
+    background:none;
+    margin:0;
+}
+h1 span
+{
+    display:block;
+    left:50%;
+    transform:translate(-50%);
+    position:relative;
+    color:white;
+    padding-bottom:20px;
+    margin-bottom:20px;
+    border-bottom:1px solid var(--transparent);
+}
+h1,h2,h3
+{
+    text-align:center;
+    color:white;
+}
+#datos
+{
+    text-align:center;
+    font-size:14px;
+    color:white;
+}
+#datos span:nth-child(2)
+{
+    border-left:1px solid;
+    border-right:1px solid;
+    padding-left:5px;
+    padding-right:5px;
+}
+button:active
+{
+    user-select:none;
+    transform:scale(0.9);
+}
+.blub
+{
+    width: 1px;
+    height: 1px;
+    border-radius: 150px;
+    background: radial-gradient(transparent,rgba(255, 255, 255, 0.5));
+    animation: anim 0.3s linear;
+    z-index: -10;
+
+    position: absolute;
+}
+@keyframes anim
+{
+    100%
+    {
+        transform: scale(100);
+        opacity: 0;
+    }
+}
+    <title>Page Title</title>
+</style>
+</head>
+
+<body>
+    <div id="blubs"></div>
+    <div class="container">
+        <div>
+            <div class="app">
+                <form class="flex input" onsubmit="return false">
+                    <div>
+                        <input placeholder="Site name or country" id="inp" required>
+                    </div>
+                    <div>
+                        <button onclick="getWeather()">search</button>
+                    </div>
+                </form>
+
+
+                <div id="content">
+                    <div>
+                        <h1 id="region">Name</h1>
+                        <div>
+                            <img src="" id="ico">
+                        </div>
+                        <h1>
+                            <span id="pais">Country</span>
+                        </h1>
+
+                    </div>
+                    <div id="datos">
+                        <span id="condicion">Condition</span>
+                        <span id="grados">Degrees</span>
+                        <span id="fecha">Date</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    <script>
+        function id(v){
+            return document.getElementById(v)
+        }
+            async function getWeather(v='') {
+            var city = id("inp").value || v
+            if(!city) return false
+  const apiKey = '368f1b2e8b1b45fc9e9164230231106';
+  const response = await fetch(https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${city}&aqi=yes);
+  const data = await response.json();
+  //console.log(JSON.stringify(data));
+  const countryData = data.location['country'],
+  degreesData = data.current['temp_c'] + '°C',
+  dateData = data.location['localtime'],
+  conditionData = data.current.condition['text'],
+  conditionImage="https:"+data.current.condition['icon'],
+  regionData=data.location["name"],
+  windDir = data.current['wind_dir'],
+  ultrV = data.current['uv'],
+  humidity = data.current['humidity'],
+  pressure = data.current['pressure_mb']
+  
+  id("ico").setAttribute("src",conditionImage)
+  id("pais").innerText=countryData
+  id("condicion").innerText=conditionData
+  id("grados").innerText=degreesData
+  id("region").innerText=regionData
+  id("fecha").innerText=dateData
+return false
+}
+getWeather('india')
+        function newBlub()
+        {
+            var blub = document.createElement('div')
+
+            blub.className='blub'
+            blub.style.left = Math.random()*window.innerWidth+'px'
+            blub.style.top = Math.random()*window.innerHeight+'px'
+            id('blubs').appendChild(blub)
+        }
+        setInterval(newBlub,200)
+    </script>
+</body>
+
+</html>
